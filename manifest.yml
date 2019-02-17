@@ -1,4 +1,7 @@
 applications:
 - name: user_microservice
-  random-route: true
-  memory: 64M
+  routes:
+- route: usermicroservice4578.mybluemix.net
+  memory: 256M
+  services:
+  - user-redis

@@ -4,11 +4,12 @@ require('dotenv').config();
 const Knex = require('knex');
 const { Model } = require('objection');
 const Hapi = require('hapi');
-const secret = require('./configs').secret;
-const configs = require('./configs');
 const knex = Knex(require('./knexfile').development);
 const cfenv = require("cfenv");
 const appEnv = cfenv.getAppEnv();
+const services = appEnv.services;
+const redis_services = services["databases-for-redis"];
+const credentials = redis_services!=null? redis_services[0].credentials: 'redis://localhost:6379';
 Model.knex(knex);
 
 
@@ -55,13 +56,13 @@ const init = async () => {
         {
             plugin: require('hapi-redis2'),
             options: {
-                settings: process.env.REDIS_URL,
+                settings: credentials,
                 decorate:true
             }
         });
 
     server.auth.strategy('jwt', 'jwt', {
-            key: secret,
+            key: process.env.SECRET,
             verifyOptions: { algorithms: ['HS256'] },
             validate: validate
         });

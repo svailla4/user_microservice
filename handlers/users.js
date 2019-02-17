@@ -1,7 +1,6 @@
 const Users = require('../models/Users')
 const bcrypt = require('bcrypt')
 const Boom = require('boom')
-const secret = require('../configs').secret
 const JWT = require('jsonwebtoken')
 const { generateCurrentTimePlus } = require('../utils/dateFunctions')
 const {fetchSession, hashPassword} = require('../utils/userFunctions')
@@ -35,7 +34,7 @@ exports.createUser = async function (request, h) {
 
         let session = createSessionToken(user);
         client.set(session.id, JSON.stringify(session)); // store the session in redis
-        const token = JWT.sign(session, SECRET);
+        const token = JWT.sign(session, process.env.SECRET);
 
         if (user instanceof Users) {
             return h.response({status:200}).state("token", token, cookie_options);
@@ -67,7 +66,7 @@ exports.login = async (request, h) => {
 
         client.set(session.id, JSON.stringify(session));
 
-        const token = JWT.sign(session, secret);
+        const token = JWT.sign(session, process.env.SECRET);
 
         return h.response({ status: 200})
             .state("token", token, cookie_options)
@@ -102,7 +101,7 @@ exports.verifySession = async (request, h)=>{
         else if(session.exp > generateCurrentTimePlus(0) ){
             session.exp = generateCurrentTimePlus(30);
             client.set(session.id, JSON.stringify(session));
-            const token = JWT.sign(session, secret);
+            const token = JWT.sign(session, process.env.SECRET);
             return h.response({status:200}).state("token", token, cookie_options)
 
         }
