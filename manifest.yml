@@ -1,4 +1,4 @@
 applications:
 - name: user_microservice
   random-route: true
-  memory: 128M
+  memory: 64M

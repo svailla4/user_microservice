@@ -1,18 +1,20 @@
 'use strict';
 
-const Knex = require('knex')
-const { Model } = require('objection')
+require('dotenv').config();
+const Knex = require('knex');
+const { Model } = require('objection');
 const Hapi = require('hapi');
-const SECRET = require('./configs').SECRET
-
+const secret = require('./configs').secret;
+const configs = require('./configs');
 const knex = Knex(require('./knexfile').development);
-
-Model.knex(knex)
+const cfenv = require("cfenv");
+const appEnv = cfenv.getAppEnv();
+Model.knex(knex);
 
 
 const server = Hapi.server({
-    port: 8080,
-    host: 'localhost',
+    port: appEnv.port,
+    host: appEnv.host,
     routes: {
         cors: true
     }
@@ -53,13 +55,13 @@ const init = async () => {
         {
             plugin: require('hapi-redis2'),
             options: {
-                settings: 'redis://localhost:6379',
+                settings: process.env.REDIS_URL,
                 decorate:true
             }
         });
 
     server.auth.strategy('jwt', 'jwt', {
-            key: SECRET,
+            key: secret,
             verifyOptions: { algorithms: ['HS256'] },
             validate: validate
         });

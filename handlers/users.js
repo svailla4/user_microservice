@@ -1,7 +1,7 @@
 const Users = require('../models/Users')
 const bcrypt = require('bcrypt')
 const Boom = require('boom')
-const SECRET = require('../configs').SECRET
+const secret = require('../configs').secret
 const JWT = require('jsonwebtoken')
 const { generateCurrentTimePlus } = require('../utils/dateFunctions')
 const {fetchSession, hashPassword} = require('../utils/userFunctions')
@@ -67,7 +67,7 @@ exports.login = async (request, h) => {
 
         client.set(session.id, JSON.stringify(session));
 
-        const token = JWT.sign(session, SECRET);
+        const token = JWT.sign(session, secret);
 
         return h.response({ status: 200})
             .state("token", token, cookie_options)
@@ -102,7 +102,7 @@ exports.verifySession = async (request, h)=>{
         else if(session.exp > generateCurrentTimePlus(0) ){
             session.exp = generateCurrentTimePlus(30);
             client.set(session.id, JSON.stringify(session));
-            const token = JWT.sign(session, SECRET);
+            const token = JWT.sign(session, secret);
             return h.response({status:200}).state("token", token, cookie_options)
 
         }
