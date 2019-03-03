@@ -4,18 +4,12 @@ require('dotenv').config();
 const Knex = require('knex');
 const { Model } = require('objection');
 const Hapi = require('hapi');
-const knex = Knex(require('./knexfile').development);
-const cfenv = require("cfenv");
-const appEnv = cfenv.getAppEnv();
-const services = appEnv.services;
-const redis_services = services["databases-for-redis"];
-const credentials = redis_services!=null? redis_services[0].credentials: 'redis://localhost:6379';
+const knex = Knex(require('./knexfile').production);
+const credentials = `redis://${process.env.REDIS_URL}:6379`;
 Model.knex(knex);
 
-
 const server = Hapi.server({
-    port: appEnv.port,
-    host: appEnv.host,
+    port: process.env.PORT,
     routes: {
         cors: true
     }
