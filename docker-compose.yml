@@ -1,0 +1,17 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - REDIS_URL=redis
+      - POSTGRES_CONFIGURATION_ENVIRONMENT=dockerCompose
+  redis:
+    image: "redis"
+  postgres:
+    build: ./postgres/.
+    ports:
+      - "5432:5432"
+
+
