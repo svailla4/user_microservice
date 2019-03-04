@@ -9,6 +9,24 @@ module.exports = {
     }
   },
 
+  dockerCompose:{
+      client: 'postgresql',
+      connection: {
+          port: "5432",
+          database: 'user_database',
+          user:     'admin',
+          password: 'password',
+          host: 'postgres'
+      },
+      pool: {
+          min: 2,
+          max: 10
+      },
+      migrations: {
+          tableName: 'knex_migrations'
+      }
+  },
+
   staging: {
     client: 'postgresql',
     connection: {

@@ -4,7 +4,7 @@ require('dotenv').config();
 const Knex = require('knex');
 const { Model } = require('objection');
 const Hapi = require('hapi');
-const knex = Knex(require('./knexfile').production);
+const knex = Knex(require('./knexfile')[`${process.env.POSTGRES_CONFIGURATION_ENVIRONMENT}`]);
 const credentials = `redis://${process.env.REDIS_URL}:6379`;
 Model.knex(knex);
 
