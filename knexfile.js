@@ -16,7 +16,7 @@ module.exports = {
          database: 'user_database',
          user:     'admin',
          password: 'password',
-         host: 'postgres'
+         host: 'localhost'
       },
       pool: {
           min: 2,
@@ -31,10 +31,10 @@ module.exports = {
     client: 'postgresql',
     connection: {
         database: 'ibmclouddb',
-        user:     'admin',
-        password: `${process.env.PROD_POSTGRES_ADMIN_PASSWORD}`,
-        host: 'e09e908c-b26a-4e42-a7b5-6a27f46ca760.d7deeff0d58745aba57fa5c84685d5b4.databases.appdomain.cloud',
-        port: '30870',
+        user:     'ibm_cloud_b8487dca_0efb_4b8c_83b4_d359ce0d2fb1',
+        password: `3d62abeedc1d6b910c992df7ba559013f3a852fcd7146f3b2c1d2a2e75f3094c`,
+        host: '7a713b4f-4453-48ca-aa4b-d483756de8d6.b2b5a92ee2df47d58bad0fa448c15585.databases.appdomain.cloud',
+        port: '31998',
         ssl: true
     },
     pool: {

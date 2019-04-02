@@ -9,6 +9,8 @@ services:
       - POSTGRES_CONFIGURATION_ENVIRONMENT=dockerCompose
   redis:
     image: "redis"
+    ports:
+      - "6379:6379"
   postgres:
     build: ./postgres/.
     ports:

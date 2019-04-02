@@ -92,12 +92,11 @@ exports.logout = async (request, h) => {
 exports.verifySession = async (request, h)=>{
     try{
         let client = request.redis.client;
-        let session = fetchSession(client, request);
+        let session = await fetchSession(client, request);
 
         if(session.valid == false){
             throw Boom.unauthorized("Session is no longer valid");
         }
-
         else if(session.exp > generateCurrentTimePlus(0) ){
             session.exp = generateCurrentTimePlus(30);
             client.set(session.id, JSON.stringify(session));
